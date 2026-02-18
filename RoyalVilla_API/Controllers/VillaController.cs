@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
 using RoyalVilla_API.Models.DTO;
@@ -62,13 +64,13 @@ public class VillaController : ControllerBase
     {
         try
         {
-            if (villa == null)
+            if (villaDTO == null)
             {
                 return BadRequest($"Villa data is required");
             }
 
             Villa villa = _mapper.Map<Villa>(villaDTO);
-
+            villa.CreatedDate = DateTime.Now;
             await _db.Villas.AddAsync(villa);
             _db.SaveChangesAsync();
 
@@ -86,7 +88,7 @@ public class VillaController : ControllerBase
     {
         try
         {
-            if (villa == null)
+            if (villaDTO == null)
             {
                 return BadRequest($"Villa data is required");
             }
@@ -106,7 +108,7 @@ public class VillaController : ControllerBase
 
            _mapper.Map(villaDTO, existingVilla);
             existingVilla.UpdatedDate = DateTime.Now;
-            _db.SaveChangesAsync();
+           await _db.SaveChangesAsync();
 
             return Ok(villaDTO);
         }
