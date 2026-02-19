@@ -1,4 +1,6 @@
-﻿namespace RoyalVilla_API.Models.DTO;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RoyalVilla_API.Models.DTO;
 
 public class RegisterationRequestDTO
 {

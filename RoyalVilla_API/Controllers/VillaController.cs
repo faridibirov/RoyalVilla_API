@@ -30,8 +30,7 @@ public class VillaController : ControllerBase
 
         if (villas == null || villas.Count == 0)
         {
-            var response = ApiResponse<object>.NotFound();
-            return NotFound(response);
+            return NotFound(ApiResponse<object>.NotFound());
         }
 
         var dtoResponseVilla = _mapper.Map<List<VillaDTO>>(villas);
@@ -94,7 +93,7 @@ public class VillaController : ControllerBase
             Villa villa = _mapper.Map<Villa>(villaDTO);
             villa.CreatedDate = DateTime.Now;
             await _db.Villas.AddAsync(villa);
-            _db.SaveChangesAsync();
+           await _db.SaveChangesAsync();
 
             var response = ApiResponse<object>.CreatedAt(_mapper.Map<VillaDTO>(villa), "Villa created successfully");
 
@@ -134,7 +133,7 @@ public class VillaController : ControllerBase
                 return NotFound(ApiResponse<object>.NotFound($"Villa with ID {id} was not found"));
             }
 
-            var duplicateVilla = await _db.Villas.FirstOrDefaultAsync(v => v.Name.ToLower()==villaDTO.Name.ToLower() && v.id!=id);
+            var duplicateVilla = await _db.Villas.FirstOrDefaultAsync(v => v.Name.ToLower()==villaDTO.Name.ToLower() && v.Id!=id);
 
             if (duplicateVilla != null)
             {
