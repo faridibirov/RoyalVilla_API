@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="RoyalVilla_API/RoyalVilla_API.csproj" />
+  <Project Path="..\..\..\..\..\..\source\repos\RoyalVilla_API\RoyalVillaWeb\RoyalVillaWeb.csproj" Type="C#" />
+  <Project Path="..\..\..\..\..\..\source\repos\RoyalVilla_API\RoyalVilla_API\RoyalVilla_API.csproj" />
+  <Properties Name="Visual Studio">
+    <Property Name="OpenWith" Value="17" />
+  </Properties>
+  <Project Path="RoyalVillaWeb\RoyalVillaWeb.csproj" Type="C#" />
+  <Project Path="RoyalVilla_API\RoyalVilla_API.csproj" />
+  <Project Path="RoyalVilla.DTO\RoyalVilla.DTO.csproj" Type="C#" />
+</Solution>
