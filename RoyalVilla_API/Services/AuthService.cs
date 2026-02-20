@@ -2,7 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
-using RoyalVilla_API.Models.DTO;
+using RoyalVilla.DTO;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace RoyalVilla_API.Services;
 
@@ -50,7 +54,7 @@ public class AuthService : IAuthService
     }
 
 
-    public Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO loginRequestDTO)
+    public async Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO loginRequestDTO)
     {
         try
         {
@@ -95,7 +99,7 @@ public class AuthService : IAuthService
                 new Claim (ClaimTypes.Name, user.Name),
                 new Claim (ClaimTypes.Role, user.Role),
             }),
-            Expires = DataTime.UtcNow.AddDays(7),
+            Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var tokenHandler = new JwtSecurityTokenHandler();

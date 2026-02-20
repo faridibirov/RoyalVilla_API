@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
-using RoyalVilla_API.Models.DTO;
+using RoyalVilla.DTO;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace RoyalVilla_API.Controllers;
 
 [Route("api/villa")]
 [ApiController]
+[Authorize]
 //[Authorize(Roles = "Customer,Admin")]
 public class VillaController : ControllerBase
 {
@@ -23,7 +26,6 @@ public class VillaController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<IEnumerable<VillaDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
    // [Authorize(Roles = "Admin")]

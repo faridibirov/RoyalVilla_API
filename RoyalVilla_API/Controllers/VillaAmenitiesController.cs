@@ -1,12 +1,18 @@
-﻿using RoyalVilla_API.Data;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
-using RoyalVilla_API.Models.DTO;
+using RoyalVilla.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RoyalVilla_API.Controllers;
 
 [Route("api/villa-amenities")]
 [ApiController]
 //[Authorize(Roles = "Customer,Admin")]
+[Authorize]
 public class VillaAmenitiesController : ControllerBase
 {
     private readonly ApplicationDbContext _db;
@@ -19,14 +25,12 @@ public class VillaAmenitiesController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<IEnumerable<VillaAmenitiesDTO>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     // [Authorize(Roles = "Admin")]
-
     public async Task<ActionResult<ApiResponse<IEnumerable<VillaAmenitiesDTO>>>> GetVillaAmenities()
     {
-        var villaAmenities = await _db.VillaAmenities.ToListAsync();
+        var villaAmenities = await _db.VillaAmenities.Include(u => u.Villa).ToListAsync();
 
         if (villaAmenities == null || villaAmenities.Count == 0)
         {
@@ -54,7 +58,7 @@ public class VillaAmenitiesController : ControllerBase
             {
                 return BadRequest(ApiResponse<object>.BadRequest("Villa amenities ID must be greater than 0"));
             }
-            var villaAmenities = await _db.VillaAmenities.FirstOrDefaultAsync(v => v.Id == id);
+            var villaAmenities = await _db.VillaAmenities.Include(u=>u.Villa).FirstOrDefaultAsync(v => v.Id == id);
 
             if (villaAmenities == null)
             {
@@ -84,7 +88,7 @@ public class VillaAmenitiesController : ControllerBase
                 return BadRequest(ApiResponse<object>.BadRequest("Villa amenities data is required"));
             }
 
-            var villaExists = await _db.Villa.FirstOrDefaultAsync(v => v.Id == villaAmenitiesDTO.VillaId);
+            var villaExists = await _db.Villas.FirstOrDefaultAsync(v => v.Id == villaAmenitiesDTO.VillaId);
 
             if (villaExists == null)
             {
@@ -135,7 +139,7 @@ public class VillaAmenitiesController : ControllerBase
             }
 
 
-            var villaExists = await _db.Villa.FirstOrDefaultAsync(v => v.Id == villaAmenitiesDTO.VillaId);
+            var villaExists = await _db.Villas.FirstOrDefaultAsync(v => v.Id == villaAmenitiesDTO.VillaId);
 
             if (villaExists == null)
             {
