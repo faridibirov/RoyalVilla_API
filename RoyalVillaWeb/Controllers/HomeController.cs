@@ -1,21 +1,41 @@
-using Microsoft.AspNetCore.Mvc;
-using RoyalVillaWeb.Models;
 using System.Diagnostics;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using RoyalVilla.DTO;
+using RoyalVillaWeb.Models;
+using RoyalVillaWeb.Services.IServices;
 
 namespace RoyalVillaWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IVillaService _villaService;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IVillaService villaService, IMapper mapper)
         {
-            _logger = logger;
+            _villaService = villaService;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<VillaDTO> villaList = new();
+
+            try
+            {
+                var response = await _villaService.GetAllAsync<ApiResponse<List<VillaDTO>>>("");
+                if (response != null && response.Success && response.Data != null)
+                {
+                    villaList = response.Data;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                TempData["error"] = $"An error occured: {ex.Message}";
+            }
+            return View(villaList);
         }
 
         public IActionResult Privacy()
