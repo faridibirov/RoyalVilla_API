@@ -37,17 +37,21 @@ public class AuthController : Controller
             var response = await _authService.LoginAsync<ApiResponse<LoginResponseDTO>>(loginRequestDTO);
             if (response != null && response.Success && response.Data != null)
             {
-                LoginResponseDTO model  = response.Data;
+                LoginResponseDTO model = response.Data;
                 var handler = new JwtSecurityTokenHandler();
                 var jwt = handler.ReadJwtToken(model.Token);
 
                 var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u=>u.Type=="email").Value));
-                identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u=>u.Type=="role").Value));
+                identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type == "email").Value));
+                identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                HttpContext.Session.SetSring(SD.SessionToken, model.Token);
+                HttpContext.Session.SetString(SD.SessionToken, model.Token);
                 return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+             TempData["error"] = response?.Message ?? "Login failed. Please check your credentials and try again.";
             }
         }
         catch (Exception ex)

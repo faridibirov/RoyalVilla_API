@@ -6,6 +6,7 @@ using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
 using RoyalVilla.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 
 
 namespace RoyalVilla_API.Controllers.v2;
@@ -29,13 +30,13 @@ public class VillaController : ControllerBase
     public async Task<ActionResult<String>> GetVillas()
     {
 
-        return "Tis is V2";
+        return "This is V2";
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<String>> GetVillaById(int id)
     {
-		return "Tis is V2 for ID: "+id;
+		return "This is V2 for ID: "+id;
 	}
 
 }

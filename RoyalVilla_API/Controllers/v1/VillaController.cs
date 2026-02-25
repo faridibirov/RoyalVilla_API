@@ -6,6 +6,7 @@ using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
 using RoyalVilla.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Asp.Versioning;
 
 
 namespace RoyalVilla_API.Controllers.v1;

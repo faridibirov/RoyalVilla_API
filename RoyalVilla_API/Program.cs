@@ -1,6 +1,15 @@
+using System.Text;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
+using RoyalVilla.DTO;
 using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
 using RoyalVilla_API.Services;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings")["Secret"]);
@@ -49,7 +58,7 @@ builder.Services.AddControllers();
 
 var buildProvider = builder.Services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
 
-foreach (var description in buildProvider.ApiversionDescriptions)
+foreach (var description in buildProvider.ApiVersionDescriptions)
 {
 	var versionName = description.GroupName;
 	var versionNumber = description.ApiVersion.ToString();
@@ -122,7 +131,7 @@ if (app.Environment.IsDevelopment())
 	app.MapScalarApiReference(option =>
 	{
 		option.Title = "Demo - Royal Villa API";
-		var sortedVersion = provider.ApiversionDescriptions.OrderBy(x => x.Version).ToList();
+		var sortedVersion = provider.ApiVersionDescriptions.OrderBy(x => x.ApiVersion).ToList();
 		foreach (var description in sortedVersion)
 		{
 			var versionName = description.GroupName;

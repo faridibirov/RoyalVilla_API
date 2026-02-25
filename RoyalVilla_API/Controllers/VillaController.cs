@@ -12,7 +12,6 @@ namespace RoyalVilla_API.Controllers;
 
 [Route("api/villa")]
 [ApiController]
-[Authorize]
 //[Authorize(Roles = "Customer,Admin")]
 public class VillaController : ControllerBase
 {
@@ -81,6 +80,7 @@ public class VillaController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<VillaDTO>>> CreateVilla(VillaCreateDTO villaDTO)
     {
         try
@@ -119,6 +119,7 @@ public class VillaController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<VillaUpdateDTO>>> UpdateVilla(int id, VillaUpdateDTO villaDTO)
     {
         try
@@ -166,6 +167,7 @@ public class VillaController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<object>>> DeleteVilla(int id)
     {
         try
