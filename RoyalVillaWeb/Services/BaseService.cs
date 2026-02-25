@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using RoyalVilla.DTO;
-using RoyalVillaWeb.Models;
+﻿using RoyalVillaWeb.Models;
 using RoyalVillaWeb.Services.IServices;
 
 namespace RoyalVillaWeb.Services;
@@ -8,6 +6,9 @@ namespace RoyalVillaWeb.Services;
 public class BaseService : IBaseService
 {
     public IHttpClientFactory _httpClient { get; set; }
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
@@ -15,10 +16,12 @@ public class BaseService : IBaseService
 
     public ApiResponse<object> ResponseModel { get; set; }
 
-    public BaseService(IHttpClientFactory httpClient)
+    public BaseService(IHttpClientFactory httpClient, IHttpContextAccessor httpContextAccessor)
     {
         ResponseModel = new();
         _httpClient = httpClient;
+        _httpContextAccessor = httpContextAccessor;
+
     }
 
     public async Task<T?> SendAsync<T>(ApiRequest apiRequest)
@@ -28,13 +31,20 @@ public class BaseService : IBaseService
             var client = _httpClient.CreateClient("RoyalVillaAPI");
             var message = new HttpRequestMessage
             {
-                RequestUri = new Uri(apiRequest.Url, uriKind:UriKind.Relative),
+                RequestUri = new Uri(apiRequest.Url, uriKind: UriKind.Relative),
                 Method = GetHttpMethod(apiRequest.ApiType),
             };
 
+            var token = _httpContextAccessor.HttpContext?.Session?.GetString(SD.SessionToken);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                message.Headers.Authorization = new AuthenticationHeaderValue ("Bearer", token);
+            }
+
             if (apiRequest.Data != null)
             {
-                message.Content = JsonContent.Create(apiRequest.Data, options:JsonOptions);
+                message.Content = JsonContent.Create(apiRequest.Data, options: JsonOptions);
             }
 
             var apiResponse = await client.SendAsync(message);

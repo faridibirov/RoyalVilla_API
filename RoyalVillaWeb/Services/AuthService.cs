@@ -8,7 +8,8 @@ public class AuthService : BaseService, IAuthService
 {
 
     private readonly string APIEndPoint = "/api/auth";
-    public AuthService(IHttpClientFactory httpClient, IConfiguration configuration) : base(httpClient)
+    public AuthService(IHttpClientFactory httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        : base(httpClient, httpContextAccessor)
     {
     }
 

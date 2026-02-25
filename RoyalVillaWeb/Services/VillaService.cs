@@ -8,59 +8,55 @@ namespace RoyalVillaWeb.Services
     {
 
         private readonly string  APIEndPoint = "/api/villa";
-        public VillaService(IHttpClientFactory httpClient, IConfiguration configuration) : base(httpClient)
+        public VillaService(IHttpClientFactory httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) 
+            : base(httpClient,  httpContextAccessor)
         {
         }
 
-        public Task<T?> CreateAsync<T>(VillaCreateDTO dto, string token)
+        public Task<T?> CreateAsync<T>(VillaCreateDTO dto)
         {
             return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.POST,
                 Data = dto,
-                Url = APIEndPoint,
-                Token = token
+                Url = APIEndPoint
             });
         }
 
-        public Task<T?> DeleteAsync<T>(int id, string token)
+        public Task<T?> DeleteAsync<T>(int id)
         {
             return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.DELETE,
                 Url = $"{APIEndPoint}/{id}",
-                Token = token
             });
         }
 
-        public Task<T?> GetAllAsync<T>(string token)
+        public Task<T?> GetAllAsync<T>()
         {
             return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.GET,
                 Url = APIEndPoint,
-                Token = token
             });
         }
 
-        public Task<T?> GetAsync<T>(int id, string token)
+        public Task<T?> GetAsync<T>(int id)
         {
             return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.GET,
                 Url = $"{APIEndPoint}/{id}",
-                Token = token
             });
         }
 
-        public Task<T?> UpdateAsync<T>(VillaUpdateDTO dto, string token)
+        public Task<T?> UpdateAsync<T>(VillaUpdateDTO dto)
         {
             return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.PUT,
                 Data = dto,
-                Url = $"{APIEndPoint}/{dto.Id}",
-                Token = token
+                Url = $"{APIEndPoint}/{dto.Id}"
             });
         }
     }

@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using RoyalVilla_API.Data;
 using RoyalVilla.DTO;
 using RoyalVilla_API.Services;
+using Asp.Versioning;
 
 namespace RoyalVilla_API.Controllers;
 
 [Route("api/auth")]
+[ApiVersionNeutral]
 [ApiController]
 public class AuthController : ControllerBase
 {

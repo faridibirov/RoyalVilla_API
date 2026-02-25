@@ -45,8 +45,8 @@ public class AuthController : Controller
                 identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u=>u.Type=="email").Value));
                 identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u=>u.Type=="role").Value));
                 var principal = new ClaimsPrincipal(identity);
-                
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                HttpContext.Session.SetSring(SD.SessionToken, model.Token);
                 return RedirectToAction("Index", "Home");
             }
         }
