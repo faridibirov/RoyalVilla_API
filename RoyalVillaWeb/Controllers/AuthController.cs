@@ -52,6 +52,7 @@ public class AuthController : Controller
             else
             {
              TempData["error"] = response?.Message ?? "Login failed. Please check your credentials and try again.";
+                return View(loginRequestDTO);
             }
         }
         catch (Exception ex)

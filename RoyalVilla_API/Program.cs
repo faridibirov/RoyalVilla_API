@@ -14,6 +14,7 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings")["Secret"]);
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddAuthentication(option =>
 {
 	option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -109,7 +110,7 @@ builder.Services.AddAutoMapper(o =>
 	o.CreateMap<Villa, VillaUpdateDTO>().ReverseMap();
 	o.CreateMap<Villa, VillaDTO>().ReverseMap();
 	o.CreateMap<VillaUpdateDTO, VillaDTO>().ReverseMap();
-	o.CreateMap<User, UserDTO>().ReverseMap();
+	o.CreateMap<ApplicationUser, UserDTO>().ReverseMap();
 	o.CreateMap<VillaAmenities, VillaAmenitiesCreateDTO>().ReverseMap();
 	o.CreateMap<VillaAmenities, VillaAmenitiesUpdateDTO>().ReverseMap();
 	o.CreateMap<VillaAmenities, VillaAmenitiesDTO>().ForMember(dest => dest.VillaName, u => u.MapFrom(src => src.Villa != null ? src.Villa.Name : null));

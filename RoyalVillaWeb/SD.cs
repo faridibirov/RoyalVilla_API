@@ -11,4 +11,6 @@ public static class SD
     }
 
     public const string SessionToken = "JWTToken";
+    public const string CurrentAPIVersion = "v2";
+
 }
