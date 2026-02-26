@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
 
 namespace RoyalVilla_API.Services;
 
@@ -60,7 +61,7 @@ public class AuthService : IAuthService
 
             await _userManager.AddToRoleAsync(user, role);
 
-            var userDto = _mapper.Map<userDto>(user);
+            var userDto = _mapper.Map<UserDTO>(user);
             userDto.Role = role;
 
             return userDto;
@@ -122,7 +123,7 @@ public class AuthService : IAuthService
         return await _db.AppliationUsers.AnyAsync(u => u.Email.ToLower() == email.ToLower());
     }
 
-    private async string GenerateJwtToken (ApplicationUser user)
+    private async Task<string> GenerateJwtToken (ApplicationUser user)
     {
         var key = Encoding.ASCII.GetBytes(_configuration.GetSection("JwtSettings")["Secret"]);
         var roles = await _userManager.GetRolesAsync(user); 

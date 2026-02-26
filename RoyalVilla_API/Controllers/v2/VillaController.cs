@@ -1,4 +1,10 @@
-﻿using RoyalVilla_API.Data;
+﻿using Asp.Versioning;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RoyalVilla.DTO;
+using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
 
 
@@ -7,8 +13,7 @@ namespace RoyalVilla_API.Controllers.v2;
 [Route("api/v{version:apiVersion}/villa")]
 [ApiVersion("2.0")]
 [ApiController]
-[Authorize]
-//[Authorize(Roles = "Customer,Admin")]
+//[Authorize]
 public class VillaController : ControllerBase
 {
 	private readonly ApplicationDbContext _db;
@@ -23,8 +28,6 @@ public class VillaController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(typeof(ApiResponse<IEnumerable<VillaDTO>>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
-	// [Authorize(Roles = "Admin")]
-
 	public async Task<ActionResult<ApiResponse<IEnumerable<VillaDTO>>>> GetVillas([FromQuery] string? filterBy,
 		[FromQuery] string? filterQuery, [FromQuery] string? sortBy,
 		[FromQuery] string? sortOrder = "asc", [FromQuery] int page = 1,
@@ -34,7 +37,7 @@ public class VillaController : ControllerBase
 		if (page < 1) page = 1;
 		if (pageSize < 1) pageSize = 10;
 		if (pageSize > 100) pageSize = 100;
-		var villasQuery = _db.VillaAmenities.AsQueryable();
+		var villasQuery = _db.Villas.AsQueryable();
 
 		//search logic
 		if (!string.IsNullOrEmpty(filterQuery) && !string.IsNullOrEmpty(filterBy))
