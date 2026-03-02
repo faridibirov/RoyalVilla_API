@@ -10,6 +10,7 @@ using RoyalVilla.DTO;
 using RoyalVilla_API.Data;
 using RoyalVilla_API.Models;
 using RoyalVilla_API.Services;
+using RoyalVilla_API.Services.IServices;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,7 +38,7 @@ builder.Services.AddAuthentication(option =>
 });
 
 
-
+builder.Services.AddScoped<ImageService, ImageService>();
 builder.Services.AddApiVersioning(options =>
 {
 	options.AssumeDefaultVersionWhenUnspecified = true;
@@ -144,6 +145,7 @@ if (app.Environment.IsDevelopment())
 		}
 	});
 }
+app.UseStaticFiles();
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("*"));
 app.UseHttpsRedirection();
 app.UseAuthentication();

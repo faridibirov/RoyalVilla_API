@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
+using RoyalVilla_API.Services.IServices;
 
 namespace RoyalVilla_API.Services;
 

@@ -14,4 +14,5 @@ public class VillaUpdateDTO
     public int Sqft { get; set; }
     public int Occupancy { get; set; }
     public string ImageUrl { get; set; }
+    public IFromFile? Image {  get; set; }
 }
