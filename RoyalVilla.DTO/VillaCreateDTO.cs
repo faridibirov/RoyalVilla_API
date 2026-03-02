@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace RoyalVilla.DTO;
 
@@ -11,6 +12,6 @@ public class VillaCreateDTO
     public double Rate { get; set; }
     public int? Sqft { get; set; }
     public int? Occupancy { get; set; }
-    public string ImageUrl { get; set; }
-	public IFromFile? Image { get; set; }
+    public string? ImageUrl { get; set; }
+	public IFormFile? Image { get; set; }
 }

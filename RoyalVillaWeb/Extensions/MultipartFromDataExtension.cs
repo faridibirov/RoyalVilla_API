@@ -1,4 +1,6 @@
-﻿namespace RoyalVillaWeb.Extensions;
+﻿using System.Net.Http.Headers;
+
+namespace RoyalVillaWeb.Extensions;
 
 public static class MultipartFromDataExtension
 {

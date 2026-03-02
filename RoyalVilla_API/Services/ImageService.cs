@@ -21,7 +21,7 @@ public class ImageService : IImageService
 				throw new InvalidOperationException("Invalid image file");
 			}
 
-			var uploadFolder = Path.Combine(_webHostEnvironment.WebRoothPath, "images", "villas");
+			var uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "villas");
 			if (!Directory.Exists(uploadFolder))
 			{
 				Directory.CreateDirectory(uploadFolder);
@@ -51,11 +51,11 @@ public class ImageService : IImageService
 		{
 			if (string.IsNullOrEmpty(imageUrl))
 			{
-				throw false;
+				return false;
 			}
 
 			var fileName = Path.GetFileName(imageUrl);
-			var filePath = Path.Combine(_webHostEnvironment.WebRoothPath, "images", "villas", fileName);
+			var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "villas", fileName);
 			if (File.Exists(filePath))
 			{
 				await Task.Run(()=>File.Delete(filePath));

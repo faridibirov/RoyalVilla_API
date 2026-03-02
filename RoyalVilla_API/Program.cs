@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(option =>
 });
 
 
-builder.Services.AddScoped<ImageService, ImageService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddApiVersioning(options =>
 {
 	options.AssumeDefaultVersionWhenUnspecified = true;
