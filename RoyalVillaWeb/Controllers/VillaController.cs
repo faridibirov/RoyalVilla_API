@@ -105,6 +105,7 @@ public class VillaController : Controller
         try
         {
             var response = await _villaService.DeleteAsync<ApiResponse<object>>(villaDTO.Id);
+
             if (response != null && response.Success)
             {
                 TempData["success"] = $"Villa deleted successfully";

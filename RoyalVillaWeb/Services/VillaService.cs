@@ -15,10 +15,11 @@ namespace RoyalVillaWeb.Services
 
         public Task<T?> CreateAsync<T>(VillaCreateDTO dto)
         {
+            var formData = dto.ToMultipartFormData();
             return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.POST,
-                Data = dto,
+                Data = formData,
                 Url = APIEndPoint
             });
         }
@@ -52,10 +53,11 @@ namespace RoyalVillaWeb.Services
 
         public Task<T?> UpdateAsync<T>(VillaUpdateDTO dto)
         {
-            return SendAsync<T>(new ApiRequest
+			var formData = dto.ToMultipartFormData();
+			return SendAsync<T>(new ApiRequest
             {
                 ApiType = SD.ApiType.PUT,
-                Data = dto,
+                Data = formData,
                 Url = $"{APIEndPoint}/{dto.Id}"
             });
         }

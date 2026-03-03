@@ -47,7 +47,14 @@ public class BaseService : IBaseService
 
             if (apiRequest.Data != null)
             {
+                if(apiRequest.Data is MultipartFormDataContent multipartContent)
+                {
+                    message.Content = multipartContent;
+                }
+                else
+                {
                 message.Content = JsonContent.Create(apiRequest.Data, options: JsonOptions);
+                }
             }
 
             var apiResponse = await client.SendAsync(message);
