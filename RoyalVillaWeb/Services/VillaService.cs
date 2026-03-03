@@ -1,4 +1,5 @@
 ﻿using RoyalVilla.DTO;
+using RoyalVillaWeb.Extensions;
 using RoyalVillaWeb.Models;
 using RoyalVillaWeb.Services.IServices;
 
@@ -8,8 +9,8 @@ namespace RoyalVillaWeb.Services
     {
 
         private readonly string  APIEndPoint = $"/api/{SD.CurrentAPIVersion}/villa";
-        public VillaService(IHttpClientFactory httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) 
-            : base(httpClient,  httpContextAccessor)
+        public VillaService(IHttpClientFactory httpClient, IConfiguration configuration, ITokenProvider tokenProvider) 
+            : base(httpClient, tokenProvider)
         {
         }
 

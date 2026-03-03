@@ -1,4 +1,7 @@
-﻿using RoyalVillaWeb.Services.IServices;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using RoyalVillaWeb.Services.IServices;
 
 namespace RoyalVillaWeb.Services;
 

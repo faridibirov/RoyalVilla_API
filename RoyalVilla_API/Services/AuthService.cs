@@ -77,7 +77,7 @@ public class AuthService : IAuthService
     }
 
 
-    public async Task<LoginResponseDTO?> LoginAsync(LoginRequestDTO loginRequestDTO)
+    public async Task<TokenDTO?> LoginAsync(LoginRequestDTO loginRequestDTO)
     {
         try
         {

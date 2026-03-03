@@ -1,4 +1,9 @@
-﻿using RoyalVillaWeb.Services.IServices;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using RoyalVilla.DTO;
+using RoyalVillaWeb.Services.IServices;
 
 namespace RoyalVillaWeb.Controllers;
 

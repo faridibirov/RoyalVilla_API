@@ -8,8 +8,8 @@ public class AuthService : BaseService, IAuthService
 {
 
     private readonly string APIEndPoint = "/api/auth";
-    public AuthService(IHttpClientFactory httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
-        : base(httpClient, httpContextAccessor)
+    public AuthService(IHttpClientFactory httpClient, IConfiguration configuration, ITokenProvider tokenProvider)
+        : base(httpClient, tokenProvider)
     {
     }
 
@@ -20,7 +20,7 @@ public class AuthService : BaseService, IAuthService
             ApiType = SD.ApiType.POST,
             Data = loginRequestDTO,
             Url = APIEndPoint+"/login",
-        });
+        }, withBearer:false);
     }
 
     public Task<T?> RegisterAsync<T>(RegisterationRequestDTO registerationRequestDTO)
@@ -30,6 +30,6 @@ public class AuthService : BaseService, IAuthService
             ApiType = SD.ApiType.POST,
             Data = registerationRequestDTO,
             Url = APIEndPoint+"/register",
-        });
+        }, withBearer: false);
     }
 }

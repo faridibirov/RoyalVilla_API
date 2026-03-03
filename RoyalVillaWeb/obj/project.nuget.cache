@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "/IFFKMXMTxo=",
+  "dgSpecHash": "Wesx3wnwHgw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\F.Dibirov\\source\\repos\\RoyalVilla_API\\RoyalVillaWeb\\RoyalVillaWeb.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\Git\\RoyalVilla\\RoyalVillaWeb\\RoyalVillaWeb.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Farid\\.nuget\\packages\\automapper\\16.0.0\\automapper.16.0.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.16.0\\microsoft.identitymodel.abstractions.8.16.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.16.0\\microsoft.identitymodel.jsonwebtokens.8.16.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\microsoft.identitymodel.logging\\8.16.0\\microsoft.identitymodel.logging.8.16.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.16.0\\microsoft.identitymodel.tokens.8.16.0.nupkg.sha512",
+    "C:\\Users\\Farid\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.16.0\\system.identitymodel.tokens.jwt.8.16.0.nupkg.sha512"
+  ],
   "logs": []
 }

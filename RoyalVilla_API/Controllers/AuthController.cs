@@ -57,10 +57,10 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    [ProducesResponseType(typeof(ApiResponse<LoginResponseDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<TokenDTO>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ApiResponse<LoginResponseDTO>>> Login([FromBody] LoginRequestDTO loginRequestDTO)
+    public async Task<ActionResult<ApiResponse<TokenDTO>>> Login([FromBody] LoginRequestDTO loginRequestDTO)
     {
         try
         {
@@ -78,7 +78,7 @@ public class AuthController : ControllerBase
 
 
             //auth service
-            var response = ApiResponse<LoginResponseDTO>.Ok(loginResponse, "Login successful");
+            var response = ApiResponse<TokenDTO>.Ok(loginResponse, "Login successful");
             return Ok(response);
         }
         catch (Exception ex)

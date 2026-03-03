@@ -1,4 +1,6 @@
-﻿namespace RoyalVillaWeb.Services.IServices;
+﻿using System.Security.Claims;
+
+namespace RoyalVillaWeb.Services.IServices;
 
 public interface ITokenProvider
 {
