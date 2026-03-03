@@ -1,25 +1,19 @@
-﻿using System.Diagnostics;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using RoyalVilla.DTO;
-using RoyalVillaWeb.Models;
-using RoyalVillaWeb.Services.IServices;
+﻿using RoyalVillaWeb.Services.IServices;
 
 namespace RoyalVillaWeb.Controllers;
 
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
+    private readonly ITokenProvider _tokenProvider;
     private readonly IMapper _mapper;
 
-    public AuthController(IAuthService authService, IMapper mapper)
+    public AuthController(IAuthService authService, IMapper mapper, ITokenProvider tokenProvider)
     {
         _authService = authService;
         _mapper = mapper;
+        _tokenProvider = tokenProvider;
+
     }
 
     [HttpGet]
@@ -34,24 +28,27 @@ public class AuthController : Controller
     {
         try
         {
-            var response = await _authService.LoginAsync<ApiResponse<LoginResponseDTO>>(loginRequestDTO);
+            var response = await _authService.LoginAsync<ApiResponse<TokenDTO>>(loginRequestDTO);
             if (response != null && response.Success && response.Data != null)
             {
-                LoginResponseDTO model = response.Data;
-                var handler = new JwtSecurityTokenHandler();
-                var jwt = handler.ReadJwtToken(model.Token);
+                var principal = _tokenProvider.CreatePrincipalFromJwtToken(response.Data.AccessToken);
 
-                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type == "email").Value));
-                identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
-                var principal = new ClaimsPrincipal(identity);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                HttpContext.Session.SetString(SD.SessionToken, model.Token);
-                return RedirectToAction("Index", "Home");
+                if (principal != null)
+                {
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    _tokenProvider.SetToken(response.Data.AccessToken);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                else
+                {
+                    TempData["error"] = "Invalid token received. Please try again.";
+                }
+
             }
             else
             {
-             TempData["error"] = response?.Message ?? "Login failed. Please check your credentials and try again.";
+                TempData["error"] = response?.Message ?? "Login failed. Please check your credentials and try again.";
                 return View(loginRequestDTO);
             }
         }
@@ -67,7 +64,7 @@ public class AuthController : Controller
     [HttpGet]
     public IActionResult Register()
     {
-        return View( new RegisterationRequestDTO
+        return View(new RegisterationRequestDTO
         {
             Email = string.Empty,
             Name = string.Empty,
@@ -90,7 +87,7 @@ public class AuthController : Controller
             }
             else
             {
-                TempData["error"] = response?.Message??  "Registration failed Please try again.";
+                TempData["error"] = response?.Message ?? "Registration failed Please try again.";
                 return View(registerationRequestDTO);
             }
         }
@@ -109,8 +106,8 @@ public class AuthController : Controller
 
     public async Task<IActionResult> Logout()
     {
-
-        await HttpContext.SignOutAsync();
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        _tokenProvider.ClearToken();   
         return RedirectToAction("Index", "Home");
     }
 

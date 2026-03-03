@@ -99,15 +99,12 @@ public class AuthService : IAuthService
 
             var token = await GenerateJwtToken(user);
             var roles = await _userManager.GetRolesAsync(user);    
-            var loginResponseDTO =   new LoginResponseDTO
+            var tokenDTO =   new TokenDTO
             {
-                UserDTO = _mapper.Map<UserDTO>(user),
-                Token = token
+                AccessToken = token
             };
 
-            loginResponseDTO.UserDTO.Role = roles.FirstOrDefault()??"Customer";
-
-            return loginResponseDTO;
+            return tokenDTO;
 
         }
         catch (Exception ex)
